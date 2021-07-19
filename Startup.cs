@@ -46,6 +46,8 @@ namespace ATMApp
 
             app.UseAuthorization();
 
+            InfoATM.ATM = new ATMApp.Models.ATM(); 
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
