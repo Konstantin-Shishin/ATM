@@ -3,7 +3,7 @@
     ViewData["Title"] = "ATM_Main";
 }
 
-@using (Html.BeginForm("Index", "Home", FormMethod.Post))
+@using (Html.BeginForm("GiveOut", "Home", FormMethod.Post))
 {
     <table border="1">
         <tbody>
@@ -21,9 +21,11 @@
             </tr>
             <tr>
                 <th colspan="2">
-                    <p><input type=text name="GiveOutSum" placeholder="Введите сумму"></p>
+                    <p><input type=text name="GiveOutSum" placeholder="Введите сумму"> </p>
                 </th>
-                <th colspan="2">Номинал</th>
+                <th colspan="2">
+                    <p><input type=text name="Nominal" placeholder="Номинал"></p>
+                </th>
                 <th colspan="3"><input type="submit" value="Снять деньги" /></th>
             </tr>
         </tbody>

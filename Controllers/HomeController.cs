@@ -27,11 +27,9 @@ namespace ATMApp.Controllers
         [HttpPost]
         public IActionResult GiveOut(int GiveOutSum, int Nominal)
         {
-            if (GiveOutSum == 100)
-            {
-                ATM.bills[50] = ATM.bills[50] - 2;
-            }
-            return View(ATM);
+            //нормальный случай
+            ATM.bills[Nominal] = ATM.bills[Nominal] - GiveOutSum / Nominal;
+            return View("Index", ATM);
         }
 
         public IActionResult Privacy()
