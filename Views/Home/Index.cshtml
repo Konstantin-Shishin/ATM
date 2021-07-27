@@ -9,17 +9,14 @@
             @using (Html.BeginForm("Giveout", "Home", FormMethod.Post))
             {
             <tr>
-                <th colspan="3">Всего @Model.bills.Keys.Select(a => a * Model.bills[a]).Sum()</th>
-                <th colspan="4">Количество купюр @Model.bills.Values.Select(a => a).Sum()</th>
+                <th colspan="3">Всего @Model.GetDictBills().Keys.Select(a => a * Model.GetDictBills()[a]).Sum()</th>
+                <th colspan="4">Количество купюр @Model.GetDictBills().Values.Select(a => a).Sum()</th>
             </tr>
-                <tr>
-                    <th>10Р:@Model.bills[10]</th>
-                    <th>50Р:@Model.bills[50]</th>
-                    <th>100Р:@Model.bills[100]</th>
-                    <th>200Р:@Model.bills[200]</th>
-                    <th>500Р:@Model.bills[500]</th>
-                    <th>1000Р:@Model.bills[1000]</th>
-                    <th>5000Р:@Model.bills[5000]</th>
+                <tr>                    
+                    @foreach (var key in Model.GetDictBills().Keys)
+                    {
+                        <th>@key Р : @Model.GetDictBills()[key] </th>
+                }
                 </tr>
                 <tr>
                     <th colspan="2">

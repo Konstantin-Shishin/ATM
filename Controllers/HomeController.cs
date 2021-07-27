@@ -26,48 +26,35 @@ namespace ATMApp.Controllers
         [HttpPost]
         public IActionResult GiveOut(int? GiveOutSum, int? NominalGiv)
         {
+            
 
             if (GiveOutSum == null || NominalGiv == null)
             {
                 return BadRequest("Не указаны параметры запроса");
             }
 
-            if (NominalGiv > GiveOutSum)
+            else if (NominalGiv > GiveOutSum)
             {
                 return BadRequest("Номинал купюры больше требуемой суммы к выдаче, вернитесь назад");
             }
 
-            // недостаточно средств для выдачи
-            if (InfoATM.ATM.bills.Keys.Select(a => a * InfoATM.ATM.bills[a]).Sum()<GiveOutSum)
-            {
-                return BadRequest("Недостаточно средств, вернитесь назад");
-            }
-
             // запрошенная сумма с единицами (неверный формат)
-            if (GiveOutSum % 10 != 0)
+            else if (GiveOutSum % 10 != 0)
             {
                 return BadRequest("Невозможно произвести выдачу номиналом менее 10Р");
             }
-
-            // попытка выдачи
-            int remain = (GiveOutSum % NominalGiv).Value;
-            if (remain == 0) // выдача полностью запрошенныи номиналом
-            {
-                if (InfoATM.ATM.bills[NominalGiv.Value] - (GiveOutSum / NominalGiv).Value < 0)
-                {
-                    return BadRequest("Невозможно произвести выдачу только этим номиналом, недостаточно купюр. Вернитесь назад");
-                }
-                InfoATM.ATM.bills[NominalGiv.Value] = InfoATM.ATM.bills[NominalGiv.Value] - (GiveOutSum / NominalGiv).Value;
-                return View("Index", InfoATM.ATM);
-            }
             else
             {
-                // выдача номиналом заданным, максимально возможная
-                InfoATM.ATM.bills[NominalGiv.Value] = InfoATM.ATM.bills[NominalGiv.Value] - (GiveOutSum / NominalGiv).Value; 
-                // выдача остатка
-                InfoATM.ATM.GiveOutAlgorithm(remain);
-                return View("Index", InfoATM.ATM);
-            }           
+                string result = InfoATM.ATM.GiveOut(GiveOutSum.Value, NominalGiv.Value);
+                if (result != "GiveOut")
+                {
+                    return BadRequest(result);
+                }
+                else
+                {
+                    return View("Index", InfoATM.ATM);
+                }                
+            }
         }
 
         [HttpPost]
@@ -78,15 +65,24 @@ namespace ATMApp.Controllers
             {
                 return BadRequest("Не указаны параметры запроса");
             }
-            //ограничение по количеству хранимых купюр
-            if ((InfoATM.ATM.bills.Values.Select(a => a).Sum() + (ReceiveSum/NominalRec).Value) > InfoATM.ATM.CountMaxBills)
+            else if (ReceiveSum % 10 != 0)
             {
-                return BadRequest("Превышение лимита количества купюр, вернитесь назад");
+                return BadRequest("Невозможно произвести внесение номиналом менее 10Р");
+            }
+            else
+            {
+                string result = InfoATM.ATM.Receive(ReceiveSum.Value, NominalRec.Value);
+                if (result != "Receive")
+                {
+                    return BadRequest(result);
+                }
+                else
+                {
+                    return View("Index", InfoATM.ATM);
+                }
             }
 
-            // норм
-            InfoATM.ATM.bills[NominalRec.Value] = InfoATM.ATM.bills[NominalRec.Value] + (ReceiveSum / NominalRec).Value;
-            return View("Index", InfoATM.ATM);
+
         }
 
         public IActionResult Privacy()

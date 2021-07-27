@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATMApp", "ATMApp.csproj", "{2DEB91F4-3B8D-40DF-8A5F-E9D6A4E44236}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditorTextConsole", "EditorTextConsole\EditorTextConsole.csproj", "{426D7431-3CB7-4ECB-9B9C-B27B8467FBC4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditText", "..\EditText\EditText.csproj", "{F5BC400F-3123-42E9-9DBB-389477F95839}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{2DEB91F4-3B8D-40DF-8A5F-E9D6A4E44236}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DEB91F4-3B8D-40DF-8A5F-E9D6A4E44236}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DEB91F4-3B8D-40DF-8A5F-E9D6A4E44236}.Release|Any CPU.Build.0 = Release|Any CPU
-		{426D7431-3CB7-4ECB-9B9C-B27B8467FBC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{426D7431-3CB7-4ECB-9B9C-B27B8467FBC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{426D7431-3CB7-4ECB-9B9C-B27B8467FBC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{426D7431-3CB7-4ECB-9B9C-B27B8467FBC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5BC400F-3123-42E9-9DBB-389477F95839}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5BC400F-3123-42E9-9DBB-389477F95839}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5BC400F-3123-42E9-9DBB-389477F95839}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5BC400F-3123-42E9-9DBB-389477F95839}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

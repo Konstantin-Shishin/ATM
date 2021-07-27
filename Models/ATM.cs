@@ -9,8 +9,8 @@ namespace ATMApp.Models
 {
     public class ATM
     {
-        public int CountMaxBills = 10000;
-        public Dictionary<int, int> bills;
+        private int CountMaxBills { get; set; }
+        private Dictionary<int, int> bills { get; set; }
 
         public ATM()
         {
@@ -22,19 +22,89 @@ namespace ATMApp.Models
             bills.Add(500, 1000);
             bills.Add(1000, 500);
             bills.Add(5000, 500);
+            CountMaxBills = 10000;
         }
 
-        public void GetBills()
+        private bool InvariantNominal(int Nominal) // Инвариант наличия записи о купюрах заданного номинала
         {
-            return;
+            if (!bills.ContainsKey(Nominal))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }           
         }
-        public void GiveOutBills()
+
+        public string GiveOut(int GiveOutSum, int NominalGiv)
         {
-            return;
+
+            if (!InvariantNominal(NominalGiv))
+            {
+                return "Недопустимая купюра";
+            }
+
+            // недостаточно средств для выдачи
+            if (InfoATM.ATM.GetDictBills().Keys.Select(a => a * InfoATM.ATM.GetDictBills()[a]).Sum() < GiveOutSum)
+            {
+                return "Недостаточно средств, вернитесь назад";
+            }
+
+            // попытка выдачи
+            int remain = (GiveOutSum % NominalGiv); 
+            if (remain == 0) // выдача полностью запрошенныи номиналом
+            {
+                if (InfoATM.ATM.GetDictBills()[NominalGiv] - (GiveOutSum / NominalGiv) < 0)
+                {
+                    return "Невозможно произвести выдачу только этим номиналом, недостаточно купюр. Вернитесь назад";
+                }
+                InfoATM.ATM.GetDictBills()[NominalGiv] = InfoATM.ATM.GetDictBills()[NominalGiv] - (GiveOutSum / NominalGiv);
+                return "GiveOut";
+            }
+            else
+            {
+                if (InfoATM.ATM.GetDictBills()[NominalGiv] - (GiveOutSum / NominalGiv) < 0)
+                {
+                    return "Невозможно произвести выдачу только этим номиналом, недостаточно купюр. Вернитесь назад";
+                }
+                // выдача номиналом заданным, максимально возможная
+                InfoATM.ATM.GetDictBills()[NominalGiv] = InfoATM.ATM.GetDictBills()[NominalGiv] - (GiveOutSum / NominalGiv);
+                // выдача остатка
+                InfoATM.ATM.GiveOutAlgorithm(remain);
+            }
+            return "GiveOut";
+        }
+
+        public string Receive(int ReceiveSum, int NominalRec)
+        {
+            if (!InvariantNominal(NominalRec))
+            {
+                return "Недопустимая купюра";
+            }
+
+            else if (ReceiveSum <= 0)
+            {
+                return "Сумма меньше либо равна 0";
+            }
+            
+            //ограничение по количеству хранимых купюр
+            else if ((InfoATM.ATM.GetDictBills().Values.Select(a => a).Sum() + (ReceiveSum / NominalRec)) > InfoATM.ATM.CountMaxBills)
+            {
+                return "Превышение лимита количества купюр, вернитесь назад";
+            }
+
+            // норм
+            InfoATM.ATM.GetDictBills()[NominalRec] = InfoATM.ATM.GetDictBills()[NominalRec] + (ReceiveSum / NominalRec);
+            return "Receive";
+        }
+        public Dictionary<int, int> GetDictBills()
+        {
+            return bills;
         }
 
         // выдача остатка
-        public void GiveOutAlgorithm(int remain)
+        private void GiveOutAlgorithm(int remain)
         {
             int max_key = InfoATM.ATM.bills.Keys.Select(a => a).Where(a => a <= remain).Max();
 
